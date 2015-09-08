@@ -5,7 +5,95 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <updated>2015-09-08T10:01:00-07:00</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Module Mindset</title>
+    <link rel="alternate" href="http://blog.url.com/2015/09/08/module-mindset/"/>
+    <id>http://blog.url.com/2015/09/08/module-mindset/</id>
+    <published>2015-09-08T10:01:00-07:00</published>
+    <updated>2015-09-08T10:02:52-07:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h3&gt;Overview&lt;/h3&gt;
+
+&lt;p&gt;This week I spent a couple minutes rethinking about how I conceptualize modules by reading this article. I had ery limited of modules and in practice very rarely used them. I usually just use different types of objects (Value or Service) within my code, but would like to begin to see where and when I should be using Modules.&lt;/p&gt;
+
+&lt;p&gt;Modules perpetuate the single responsibility principal. They also allow for better reading and understanding by providing a clear namespace when they are used. They also allow classes to share common methods when setup in a class.&lt;/p&gt;
+
+&lt;h3&gt;Learnings&lt;/h3&gt;
+
+&lt;p&gt;Some things I found that could be useful/interesting from this article:&lt;/p&gt;
+
+&lt;h5&gt;Different ways to impliments modules&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Include
+
+&lt;ul&gt;
+&lt;li&gt; A module can be included within a class. The objects of this class can now access all the methods of the included module. Note this adds methods to an instance of the class&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Extend
+
+&lt;ul&gt;
+&lt;li&gt;A module can be extended in a class. Unlike include this is used to add class methods.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module Foo
+  def foo
+    puts &amp;#39;heyyyyoooo!&amp;#39;
+  end
+end
+
+class Bar
+  include Foo
+end
+
+Bar.new.foo # heyyyyoooo!
+Bar.foo # NoMethodError: undefined method ‘foo’ for Bar:Class
+
+class Baz
+  extend Foo
+end
+
+Baz.foo # heyyyyoooo!
+Baz.new.foo # NoMethodError: undefined method ‘foo’ for #&amp;lt;Baz:0x1e708&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href="http://www.railstips.org/blog/archives/2009/05/15/include-vs-extend-in-ruby/"&gt;source&lt;/a&gt;&lt;/p&gt;
+
+&lt;h5&gt;Spaceship Oerator (&amp;lt;=&amp;gt;)&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This operator is often used in sorting. It compares the paramters coming in and either gives a 1,0 or -1 based on the comparison. This can be useful for comparing business logic.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Logic:
+&lt;code&gt;
+a &amp;lt;=&amp;gt; b :=
+  if a &amp;lt; b then return -1
+  if a = b then return  0
+  if a &amp;gt; b then return  1
+  if a and b are not comparable then return nil
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5&gt;Modules as first class objects&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Instead of layering modules within classes it is also possible to use a module on its own. Thus the module takes on the role of a first class object.&lt;/li&gt;
+&lt;li&gt;These objects do not depend on state so there is no need to create an instance of it.&lt;/li&gt;
+&lt;li&gt;An example of this (the text uses) is a Math module.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Dialogue&lt;/h3&gt;
+
+&lt;p&gt;After reading this article it was clear I have not been utilizing Modules as much as I should. The trick is to think and understand when is the best time to use a Module rather than a specialized object. Also which ways to impliment a Module depend entirely on the situation. Hopefully I will now begin to see and use Modules more!&lt;/p&gt;
+</content>
+  </entry>
 </feed>

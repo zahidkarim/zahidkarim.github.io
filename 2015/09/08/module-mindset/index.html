@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    <title>Blog Title - Module Mindset</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700'
+  rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+
+    <div id="main" role="main">
+      <nav>
+  <ul>
+    <li>
+      <a class="blog-title" href="/">Zahid Jethani</a>
+    </li>
+  </ul>
+</nav>
+
+      <h3>Overview</h3>
+
+<p>This week I spent a couple minutes rethinking about how I conceptualize modules by reading this article. I had ery limited of modules and in practice very rarely used them. I usually just use different types of objects (Value or Service) within my code, but would like to begin to see where and when I should be using Modules.</p>
+
+<p>Modules perpetuate the single responsibility principal. They also allow for better reading and understanding by providing a clear namespace when they are used. They also allow classes to share common methods when setup in a class.</p>
+
+<h3>Learnings</h3>
+
+<p>Some things I found that could be useful/interesting from this article:</p>
+
+<h5>Different ways to impliments modules</h5>
+
+<ul>
+<li>Include
+
+<ul>
+<li> A module can be included within a class. The objects of this class can now access all the methods of the included module. Note this adds methods to an instance of the class</li>
+</ul></li>
+<li>Extend
+
+<ul>
+<li>A module can be extended in a class. Unlike include this is used to add class methods.</li>
+</ul></li>
+</ul>
+
+<p>Example:</p>
+
+<pre><code>module Foo
+  def foo
+    puts &#39;heyyyyoooo!&#39;
+  end
+end
+
+class Bar
+  include Foo
+end
+
+Bar.new.foo # heyyyyoooo!
+Bar.foo # NoMethodError: undefined method ‘foo’ for Bar:Class
+
+class Baz
+  extend Foo
+end
+
+Baz.foo # heyyyyoooo!
+Baz.new.foo # NoMethodError: undefined method ‘foo’ for #&lt;Baz:0x1e708&gt;
+</code></pre>
+
+<p><a href="http://www.railstips.org/blog/archives/2009/05/15/include-vs-extend-in-ruby/">source</a></p>
+
+<h5>Spaceship Oerator (&lt;=&gt;)</h5>
+
+<ul>
+<li>This operator is often used in sorting. It compares the paramters coming in and either gives a 1,0 or -1 based on the comparison. This can be useful for comparing business logic.</li>
+</ul>
+
+<p>Logic:
+<code>
+a &lt;=&gt; b :=
+  if a &lt; b then return -1
+  if a = b then return  0
+  if a &gt; b then return  1
+  if a and b are not comparable then return nil
+</code></p>
+
+<h5>Modules as first class objects</h5>
+
+<ul>
+<li>Instead of layering modules within classes it is also possible to use a module on its own. Thus the module takes on the role of a first class object.</li>
+<li>These objects do not depend on state so there is no need to create an instance of it.</li>
+<li>An example of this (the text uses) is a Math module.</li>
+</ul>
+
+<h3>Dialogue</h3>
+
+<p>After reading this article it was clear I have not been utilizing Modules as much as I should. The trick is to think and understand when is the best time to use a Module rather than a specialized object. Also which ways to impliment a Module depend entirely on the situation. Hopefully I will now begin to see and use Modules more!</p>
+
+      <footer>
+  <ul class="large-column">
+    <li><h5 class="heading">Recent Articles</h5></li>
+    <li>
+      <ol>
+          <li>
+            <a href="/2015/09/08/module-mindset/">Module Mindset</a>
+            <span>Sep  8</span>
+          </li>
+      </ol>
+    </li>
+  </ul>
+
+  <ul class="small-column">
+    <li><h5 class="heading">Tags</h5></li>
+    <li>
+      <ol>
+      </ol>
+    </li>
+  <ul>
+</footer>
+
+    </div>
+
+  </body>
+</html>
