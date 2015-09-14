@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://blog.url.com/2015/09/14/null_is_something/"/>
     <id>http://blog.url.com/2015/09/14/null_is_something/</id>
     <published>2015-09-14T14:37:00-07:00</published>
-    <updated>2015-09-14T14:38:09-07:00</updated>
+    <updated>2015-09-14T14:40:06-07:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -41,145 +41,148 @@
 
 &lt;p&gt;But if statements can be enablers. Here&amp;rsquo;s how:&lt;/p&gt;
 
-&lt;p&gt;Say we have an &lt;code&gt;Book&lt;/code&gt; class and the book class has a &lt;code&gt;find&lt;/code&gt; method.
-&amp;ldquo;`
-Book.find(&amp;quot;to kill a mockingbird&amp;rdquo;)
-    =&amp;gt; &amp;lt;#Book:03939&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Say we have an &lt;code&gt;Book&lt;/code&gt; class and the book class has a &lt;code&gt;find&lt;/code&gt; method.&lt;/p&gt;
 
-&lt;p&gt;Book.find(&amp;ldquo;&amp;rdquo;)
+&lt;pre&gt;&lt;code&gt;Book.find(&amp;quot;to kill a mockingbird&amp;quot;)
+    =&amp;gt; &amp;lt;#Book:03939...
+
+Book.find(&amp;quot;&amp;quot;)
     =&amp;gt; nil
-&lt;code&gt;
-When we call `find()` we get a `Book` object back but when we call `find()` on and empty string we get `nil`. So say we want to iterate over a collection of `Books`
-&lt;/code&gt;
-titles = [&amp;ldquo;To Kill a Mocking Bird&amp;rdquo;, &amp;ldquo;&amp;rdquo;, &amp;ldquo;The Gambler&amp;rdquo;]
-all&lt;em&gt;books = titles.each { |t| Book.find(t) }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When we call &lt;code&gt;find()&lt;/code&gt; we get a &lt;code&gt;Book&lt;/code&gt; object back but when we call &lt;code&gt;find()&lt;/code&gt; on and empty string we get &lt;code&gt;nil&lt;/code&gt;. So say we want to iterate over a collection of &lt;code&gt;Books&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;titles = [&amp;quot;To Kill a Mocking Bird&amp;quot;, &amp;quot;&amp;quot;, &amp;quot;The Gambler&amp;quot;]
+all_books = titles.each { |t| Book.find(t) }
     =&amp;gt; [&amp;lt;#Book:8932&amp;gt;, nil, &amp;lt;#Book:7823&amp;gt;]
-all&lt;/em&gt;books.each { |book| book.title }
-    =&amp;gt; &amp;ldquo;To Kill a MockingBird&amp;rdquo;
+all_books.each { |book| book.title }
+    =&amp;gt; &amp;quot;To Kill a MockingBird&amp;quot;
     =&amp;gt; ###Error Occurs Here
-&lt;code&gt;
-This gets us thinking that `nil` went from being nothing to being something. Before we were fine with nil being in our code but now we are sending something to a `Null Object` we need to consider how to deal with it. We could use some built in methods like `compact(), send(), try()` or we could use abstraction and create a `MissingBook` Class that can return an object which can support a `title` method. Both the `Book` and `Missing Boo` classes can then be called to collect all Books:
-&lt;/code&gt;
-titles = [&amp;ldquo;To Kill a Mocking Bird&amp;rdquo;, &amp;ldquo;&amp;rdquo;, &amp;ldquo;The Gambler&amp;rdquo;]
-all&lt;em&gt;books = titles.each { |t| Book.find(t) || MissingBook(t) }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This gets us thinking that &lt;code&gt;nil&lt;/code&gt; went from being nothing to being something. Before we were fine with nil being in our code but now we are sending something to a &lt;code&gt;Null Object&lt;/code&gt; we need to consider how to deal with it. We could use some built in methods like &lt;code&gt;compact(), send(), try()&lt;/code&gt; or we could use abstraction and create a &lt;code&gt;MissingBook&lt;/code&gt; Class that can return an object which can support a &lt;code&gt;title&lt;/code&gt; method. Both the &lt;code&gt;Book&lt;/code&gt; and &lt;code&gt;Missing Boo&lt;/code&gt; classes can then be called to collect all Books:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;titles = [&amp;quot;To Kill a Mocking Bird&amp;quot;, &amp;quot;&amp;quot;, &amp;quot;The Gambler&amp;quot;]
+all_books = titles.each { |t| Book.find(t) || MissingBook(t) }
     =&amp;gt; [&amp;lt;#Book:8932&amp;gt;, &amp;lt;#MissingBook:8432&amp;gt;, &amp;lt;#Book:7823&amp;gt;]
-all&lt;/em&gt;books.each { |book| book.title }
-    =&amp;gt; &amp;ldquo;To Kill a MockingBird&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Missing Book&amp;rdquo;
-    =&amp;gt; &amp;ldquo;The Gambler&amp;rdquo;
-&amp;ldquo;&lt;code&gt;
-**Note:** this is a key concept here. Understanding&lt;/code&gt;nil` has a major role in how we develop code.&lt;/p&gt;
+all_books.each { |book| book.title }
+    =&amp;gt; &amp;quot;To Kill a MockingBird&amp;quot;
+    =&amp;gt; &amp;quot;Missing Book&amp;quot;
+    =&amp;gt; &amp;quot;The Gambler&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; this is a key concept here. Understanding &lt;code&gt;nil&lt;/code&gt; has a major role in how we develop code.&lt;/p&gt;
 
 &lt;h4&gt;Condition Adverse | Message Centric  Abstract Seeking&lt;/h4&gt;
 
 &lt;p&gt;The next key concept Sandy Metz brings up is the thought that we should approach conditionals adversely and think of objects as things we send messages to, &lt;strong&gt;Message Centric&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;Lets say we have a &lt;code&gt;Playlist&lt;/code&gt; class:
-&amp;rdquo;`
-class Playlist
-    def songs
-        [&amp;ldquo;Song 1&amp;rdquo;, &amp;ldquo;Song 2&amp;rdquo;, &amp;ldquo;Song 3&amp;rdquo;]
-    end&lt;/p&gt;
+&lt;p&gt;Lets say we have a &lt;code&gt;Playlist&lt;/code&gt; class:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;def list
-    songs.each { |song| puts &amp;quot;#{song} \n&amp;quot; }
+&lt;pre&gt;&lt;code&gt;class Playlist
+    def songs
+        [&amp;quot;Song 1&amp;quot;, &amp;quot;Song 2&amp;quot;, &amp;quot;Song 3&amp;quot;]
+    end
+
+    def list
+        songs.each { |song| puts &amp;quot;#{song} \n&amp;quot; }
+    end
 end
+
+Playlist.new.list
+    =&amp;gt; &amp;quot;Song 1&amp;quot;
+    =&amp;gt; &amp;quot;Song 2&amp;quot;
+    =&amp;gt; &amp;quot;Song 3&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;end&lt;/p&gt;
+&lt;p&gt;Now say we need a &lt;code&gt;RandomPlaylist&lt;/code&gt;:
+Here we can use inheritance here to solve our issue&lt;/p&gt;
 
-&lt;p&gt;Playlist.new.list
-    =&amp;gt; &amp;ldquo;Song 1&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 2&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 3&amp;rdquo;
-&lt;code&gt;
-Now say we need a `RandomPlaylist`:
-Here we can use inheritance here to solve our issue
-&lt;/code&gt;
-class RandomPlaylist &amp;lt; Playlist
+&lt;pre&gt;&lt;code&gt;class RandomPlaylist &amp;lt; Playlist
     def songs
         super.shuffle
     end
-end&lt;/p&gt;
+end
 
-&lt;p&gt;RandomPlaylist.new.list
-    =&amp;gt; &amp;ldquo;Song 2&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 3&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 1&amp;rdquo;
-&lt;code&gt;
-Now if we want to add a `DuplicatePlaylist` where all the songs appear twice we can also use inheritance:
-&lt;/code&gt;
-class DuplicatePlaylist &amp;lt; Playlist
+RandomPlaylist.new.list
+    =&amp;gt; &amp;quot;Song 2&amp;quot;
+    =&amp;gt; &amp;quot;Song 3&amp;quot;
+    =&amp;gt; &amp;quot;Song 1&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now if we want to add a &lt;code&gt;DuplicatePlaylist&lt;/code&gt; where all the songs appear twice we can also use inheritance:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class DuplicatePlaylist &amp;lt; Playlist
     def songs
         duplicate = super.dup
         super.push(duplicate).flatten
     end
-end&lt;/p&gt;
-
-&lt;p&gt;DuplicatePlaylist.new.list
-    =&amp;gt; &amp;ldquo;Song 1&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 2&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 3&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 1&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 2&amp;rdquo;
-    =&amp;gt; &amp;ldquo;Song 3&amp;rdquo;
-&lt;code&gt;
-Here is where things get hairy. What if we wanted a `DuplicatedRandomPlaylist`. Here is where inheritance gets dicey and we need to move to composition.
-&lt;/code&gt;
-class Playlist
-    SONGS = [&amp;ldquo;Song 1&amp;rdquo;, &amp;ldquo;Song 2&amp;rdquo;, &amp;ldquo;Song 3&amp;rdquo;]&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def initialize(length:, type:)
-    @songs = length.set_length(SONGS)
-    @formatted = type.organize(@songs)
 end
 
-def list
-    @formatted.each { |song| puts &amp;quot;#{song} \n&amp;quot; }
-end
+DuplicatePlaylist.new.list
+    =&amp;gt; &amp;quot;Song 1&amp;quot;
+    =&amp;gt; &amp;quot;Song 2&amp;quot;
+    =&amp;gt; &amp;quot;Song 3&amp;quot;
+    =&amp;gt; &amp;quot;Song 1&amp;quot;
+    =&amp;gt; &amp;quot;Song 2&amp;quot;
+    =&amp;gt; &amp;quot;Song 3&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;end&lt;/p&gt;
+&lt;p&gt;Here is where things get hairy. What if we wanted a &lt;code&gt;DuplicatedRandomPlaylist&lt;/code&gt;. Here is where inheritance gets dicey and we need to move to composition.&lt;/p&gt;
 
-&lt;p&gt;class DoubleLength
+&lt;pre&gt;&lt;code&gt;class Playlist
+    SONGS = [&amp;quot;Song 1&amp;quot;, &amp;quot;Song 2&amp;quot;, &amp;quot;Song 3&amp;quot;]
+
+    def initialize(length:, type:)
+        @songs = length.set_length(SONGS)
+        @formatted = type.organize(@songs)
+    end
+
+    def list
+        @formatted.each { |song| puts &amp;quot;#{song} \n&amp;quot; }
+    end
+end
+
+class DoubleLength
     def set_length(songs)
         duplicate = songs.dup
         songs.push(duplicate).flatten
     end
-end&lt;/p&gt;
+end
 
-&lt;p&gt;class DefaultLength
+class DefaultLength
     def set_length(songs)
         songs
     end
-end&lt;/p&gt;
+end
 
-&lt;p&gt;class RandomList
+class RandomList
     def organize(songs)
         songs.shuffle
     end
-end&lt;/p&gt;
+end
 
-&lt;p&gt;class DefaultList
+class DefaultList
     def organize(songs)
         songs
     end
-end&lt;/p&gt;
+end
 
-&lt;p&gt;Playlist.new(DoubleLnegth.new,RandomList.new).list
+Playlist.new(DoubleLnegth.new,RandomList.new).list
  =&amp;gt; Song 1
     Song 2
     Song 2
     Song 1
     Song 3
-    Song 3&lt;/p&gt;
+    Song 3
 
-&lt;p&gt;Playlist.new(DefaultLength.new,RandomList.new).list
+Playlist.new(DefaultLength.new,RandomList.new).list
 =&amp;gt;  Song 3
     Song 2
     Song 1
-&amp;ldquo;`
-&lt;strong&gt;Note:&lt;/strong&gt; this take aways here are that understanding when to use inheritance and understanding when composition is needed. Inheritance is not meant for sharing of methods, it is meant for specialization of them.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; this take aways here are that understanding when to use inheritance and understanding when composition is needed. Inheritance is not meant for sharing of methods, it is meant for specialization of them.&lt;/p&gt;
 
 &lt;p&gt;Until Next Time.&lt;/p&gt;
 
