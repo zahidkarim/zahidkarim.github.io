@@ -5,10 +5,124 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
-  <updated>2015-09-08T10:01:00-07:00</updated>
+  <updated>2015-09-13T23:15:00-07:00</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Duck Typing</title>
+    <link rel="alternate" href="http://blog.url.com/2015/09/14/duck_typing/"/>
+    <id>http://blog.url.com/2015/09/14/duck_typing/</id>
+    <published>2015-09-13T23:15:00-07:00</published>
+    <updated>2015-09-13T23:15:40-07:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h3&gt;Question:&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Is explicit class checking ever absolutely necessary? Are their situations in which even if other options are available, checking the class of an object is still the best thing to do?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3&gt;Response&lt;/h3&gt;
+
+&lt;p&gt;Explicitly checking the class of an object is not always necessary. It majorly depends on what the class is being used for and what possible objects will be passed in. The is no point creating verbose code that checks many cases unless they need to be handled separately.&lt;/p&gt;
+
+&lt;h5&gt;Example&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;class Media
+    def initialize(file)
+        return file.listen if file.respond_to?(:listen)
+        return file.watch if file.respond_to?(:watch)
+        return file.view if file.respond_to?(:view)
+        raise StandardError
+    end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here you can check the class of an object responds to a certain method. This can test all the considered cases and raises an exception for the rest. Thus checking the class of some but not all.&lt;/p&gt;
+
+&lt;h3&gt;Question:&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Name something weird that can happen when you write your contracts on the messages your objects respond to rather than what class of object they are.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3&gt;Response&lt;/h3&gt;
+
+&lt;p&gt;The object could response &lt;code&gt;false&lt;/code&gt; to a &lt;code&gt;response_to(:read)&lt;/code&gt; method but can still run perfectly when called &lt;code&gt;objet.read --&amp;gt; &amp;quot;hello&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;Questions&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Try to identify some feature of Ruby that relies on duck typing either for its basic functionality or as an extension point meant to be customized by application programmers.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3&gt;Example&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;class BoomBox
+    def play(media)
+        media.play
+    end
+end
+
+class CD
+    def play
+    end
+end
+
+class Radio
+    def play
+    end
+end
+
+## IRB
+
+BoomBox.play(CD.new)
+BoomBox.play(Radio.new)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Question&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Share a bit of code which does explicit class comparison that you think would be very difficult to convert to a duck-typing style.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3&gt;Example&lt;/h3&gt;
+
+&lt;p&gt;In our example above it would be less useful to use duck typing if we also had other classes that could respond to play but we didn&amp;rsquo;t want it to be passed into the BoomBox. Essentially it doesn&amp;rsquo;t restrict enough and to get around it we sometimes use verbose rescue statements for each case.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## i.e
+class Child
+    def play
+        self.swim
+    end
+end
+BoomBox.play(Child.new)
+    ## --&amp;gt; Error -- Electrocution
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Question&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Share a bit of code (either your own or from a OSS project you like) that you feel uses duck typing effectively.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3&gt;Example&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;class GenericOrder
+  def create(order)
+    order.create
+  end
+end
+
+class WholeLoan
+  def create
+    puts &amp;#39;Creating WL Order&amp;#39;
+  end
+end
+
+class FractionalLoan
+  def create
+    puts &amp;#39;Creating FL Order&amp;#39;
+  end
+end
+
+GenerateOrder.create(WholeLoan.new)
+GenerateOrder.create(FractionalLoan.new)
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+  </entry>
   <entry>
     <title>Module Mindset</title>
     <link rel="alternate" href="http://blog.url.com/2015/09/08/module-mindset/"/>
